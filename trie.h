@@ -26,6 +26,8 @@ void insere(pontNodo raiz, const char *palavra);
 
 //pontNodo busca(pontNodo raiz, const char *palavra);
 
+int mapeiaIndice (char c);
+
 void busca(pontNodo raiz, const char *sequencia_num);
 
 #endif

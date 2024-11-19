@@ -122,30 +122,40 @@ pontNodo busca(pontNodo raiz, const char *palavra) {
 }
 */
 
+int mapeiaIndice (char c){
+    return ((int)c - (int)'a');
+}
+
 // Busca na trie com suporte ao '#' para múltiplas palavras
 void busca(pontNodo raiz, const char *sequencia) {
     pontNodo p = raiz;
+    int indice;
 
     // Navega conforme a sequência numérica
     for (int i = 0; i < strlen(sequencia); i++) {
+        //char c = sequencia[i];
         char c = sequencia[i];
+
         if (c == '#') {
             if (p->prox) {
                 p = p->prox;
                 printf("%s\n", p->palavra);
                 return;
-            } else {
+            } 
+            else {
                 printf("palavra nao encontrada\n");
                 return;
             }
-        } else if (c >= '2' && c <= '9') {
+        } 
+        else if (c >= '2' && c <= '9') {
             int indice = c - '0';
             if (!p->filhos[indice]) {
                 printf("palavra nao encontrada\n");
                 return;
             }
             p = p->filhos[indice];
-        } else {
+        } 
+        else {
             printf("entrada invalida\n");
             return;
         }
@@ -158,3 +168,5 @@ void busca(pontNodo raiz, const char *sequencia) {
         printf("palavra nao encontrada\n");
     }
 }
+
+// No codigo com dois ## a busca nao esta parando n
