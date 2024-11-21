@@ -29,6 +29,9 @@ nutty
 obvious
 odious
 omniscient
+sock
+rock
+pock
 powerful
 prod
 quintessential
