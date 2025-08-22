@@ -1,7 +1,7 @@
 #ifndef TRIE_H
 #define TRIE_H
 
-#define NUMLETRA 10  // Filhos de 0 a 9
+#define NUMLETRA 10
 
 typedef struct Nodo {
     char *palavra;

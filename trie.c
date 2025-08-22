@@ -3,11 +3,13 @@
 #include <string.h>
 #include "trie.h"
 
+// Cria um novo nodo, retornando um ponteiro para ele
+// Em caso de erro, retorna  ponteiro para NULL
 pontNodo criaNo(){
     pontNodo no = (pontNodo)malloc(sizeof(Nodo));
     if (no == NULL){
         fprintf(stderr, "Erro ao alocar memoria para o no.\n");
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);  // indica erro, abortando o programa imediatamente
     }
 
     // Inicializa os filhos e o prox como NULL
@@ -20,6 +22,12 @@ pontNodo criaNo(){
     return no;
 }
 
+
+/* -------------------------------------------------- */
+
+
+/* Recebe ponteiro para a raiz e o utiliza para liberar memoria
+alocada por todos os nodos da arvore - a incluindo - */
 void freeArv(pontNodo raiz){
     if (raiz == NULL)
         return;
@@ -33,6 +41,12 @@ void freeArv(pontNodo raiz){
     free(raiz);
 }
 
+
+/* -------------------------------------------------- */
+
+
+// Funcao auxiliar que recebe um caractere c e retorna seu correspondente no teclado t9
+// Retorna -1 caso c sera um caractere invalido
 int mapeiaCaracter(char c){
     if (c >= 'a' && c <= 'c') return 2;
     if (c >= 'd' && c <= 'f') return 3;
@@ -45,6 +59,11 @@ int mapeiaCaracter(char c){
     return -1;
 }
 
+
+/* -------------------------------------------------- */
+
+
+// Recebe uma palavra (*palavra) e a insere na arvore, a partir da raiz
 void insere(pontNodo raiz, const char *palavra){
     int indice;
     pontNodo p = raiz;
@@ -54,7 +73,7 @@ void insere(pontNodo raiz, const char *palavra){
         indice = mapeiaCaracter(palavra[nivel]);
 
         if (indice == -1){
-            fprintf(stderr, "entrada invalida\n");
+            fprintf(stderr, "entrada invalida\n"); 
             return;
         }
 
@@ -65,12 +84,12 @@ void insere(pontNodo raiz, const char *palavra){
         p = p->filhos[indice];
     }
 
-    // Chegamos ao final da sequência, atribui a palavra
+    // Ao final da sequência, atribui a palavra
     if (p->palavra == NULL) {
         p->palavra = strdup(palavra);
         if (p->palavra == NULL) {
             fprintf(stderr, "Erro ao alocar memoria para a palavra.\n");
-            exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);  // Indica erro, aborta o programa imediatamente
         }
     }
     else {

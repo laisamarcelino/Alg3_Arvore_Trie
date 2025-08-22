@@ -15,6 +15,6 @@ O programa carrega um dicionário de palavras, processa consultas fornecidas pel
 
 ### 1. Compilar
 ```bash
-gcc main.c trie.c -o programa
-./programa miniDicionario.txt < consulta.txt > saida.txt
+make
+./t9 miniDicionario.txt < consulta.txt > saida.txt
 ```

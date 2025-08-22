@@ -5,25 +5,41 @@
 
 #define MAX_PALAVRA 100
 
-// Função para carregar palavras do dicionário na trie
+
+// Utiliza *nomeArquivo para abrir arquivo indicado
+// Insere as palavras no dicionario atraves da raiz
+// Encerra o programa imediatamente em caso de erro
 void carregarDicionario(pontNodo raiz, const char *nomeArquivo) {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (!arquivo) {
         fprintf(stderr, "Erro ao abrir o arquivo de dicionário.\n");
+        exit(EXIT_FAILURE);  // Codigo de erro. O programa eh imediatamente abortado.
+    }
+
+    char *palavra = (char*) malloc(MAX_PALAVRA * sizeof(char));
+    if(palavra == NULL) {
+
+        fprintf(stderr, "Erro ao alocar vetor de palavras.\n");
+        fclose(arquivo);
         exit(EXIT_FAILURE);
     }
 
-    char palavra[MAX_PALAVRA];
+
     while (fscanf(arquivo, "%s", palavra) != EOF) {
-        insere(raiz, palavra);
+        insere(raiz, palavra); 
     }
 
+    free(palavra);
     fclose(arquivo);
 }
 
-// Função para processar as consultas
+
+/* -------------------------------------------------- */
+
+
+// Acessa trie pela sua traiz, processando consultas de entrada
 void processarConsultas(pontNodo raiz) {
-    char entrada[MAX_PALAVRA];
+    char entrada[MAX_PALAVRA];                             
     pontNodo p = NULL;
     int novaSequencia = 1;
 
@@ -33,10 +49,9 @@ void processarConsultas(pontNodo raiz) {
         }
 
         int i = 0;
-        int entradaInvalida = 0;
-        int avancouComCerquilha = 0;
+        int entradaInvalida = 0;  // verifica validade da entrada
 
-        // Iniciar nova sequência se a entrada começar com dígito
+        // Inicia nova sequência se a entrada começar com dígito
         if (entrada[0] >= '2' && entrada[0] <= '9') {
             p = raiz;
             novaSequencia = 0;
@@ -45,7 +60,7 @@ void processarConsultas(pontNodo raiz) {
                 printf("palavra nao encontrada\n");
                 continue;
             }
-            // Continuar a partir do estado atual
+        // Continuar a partir do estado atual
         } else {
             printf("entrada invalida\n");
             p = NULL;
@@ -69,7 +84,6 @@ void processarConsultas(pontNodo raiz) {
             } else if (c == '#') {
                 if (p != NULL && p->prox != NULL) {
                     p = p->prox;
-                    avancouComCerquilha = 1;
                 } else {
                     printf("palavra nao encontrada\n");
                     p = NULL;
@@ -94,23 +108,26 @@ void processarConsultas(pontNodo raiz) {
     }
 }
 
+
+/* -------------------------------------------------- */
+
+
+// Valor esperado para argc: 2
+// Esperado para *argv[]: nome do arquivo a ser aberto (formato .txt)
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Uso: %s dicionario.txt < consulta.txt > saida.txt\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    // Cria a raiz da trie
     pontNodo raiz = criaNo();
 
-    // Carrega palavras do dicionário na trie
+    // argv[1] refere-se ao arquivo de dicionario a ser carregado
     carregarDicionario(raiz, argv[1]);
 
-    // Processa consultas da entrada padrão
     processarConsultas(raiz);
 
-    // Libera memória da trie
     freeArv(raiz);
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;  // indica fim da execucao sem erros
 }
